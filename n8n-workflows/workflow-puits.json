@@ -1,0 +1,226 @@
+{
+    "name": "Puits - Validation Stripe",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "puits-stripe",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "id": "webhook-stripe",
+            "name": "Webhook Stripe Payment",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ],
+            "webhookId": "puits-stripe"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "string": [
+                        {
+                            "value1": "={{$json.paymentStatus}}",
+                            "operation": "equals",
+                            "value2": "succeeded"
+                        },
+                        {
+                            "value1": "={{$json.email}}",
+                            "operation": "isNotEmpty"
+                        }
+                    ]
+                }
+            },
+            "id": "validation-payment",
+            "name": "Vérifier Paiement Réussi",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "VOTRE_GOOGLE_SHEET_ID",
+                    "mode": "list",
+                    "cachedResultName": "Puits"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "Sheet1",
+                    "mode": "list",
+                    "cachedResultName": "Sheet1"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Date": "={{$now.toISO()}}",
+                        "Prénom": "={{$json.prenom}}",
+                        "Nom": "={{$json.nom}}",
+                        "Email": "={{$json.email}}",
+                        "Téléphone": "={{$json.telephone}}",
+                        "Adresse": "={{$json.adresse}}",
+                        "Code Postal": "={{$json.codePostal}}",
+                        "Ville": "={{$json.ville}}",
+                        "Bénéficiaire": "={{$json.beneficiaire}}",
+                        "Projet": "={{$json.productName}}",
+                        "Montant": "={{$json.amount / 100}}",
+                        "Stripe Session ID": "={{$json.sessionId}}",
+                        "Statut Paiement": "={{$json.paymentStatus}}"
+                    }
+                },
+                "options": {}
+            },
+            "id": "google-sheets-puits",
+            "name": "Enregistrer dans Google Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4,
+            "position": [
+                650,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "fromEmail": "noreply@innocentsfrance.org",
+                "toEmail": "={{$json.email}}",
+                "subject": "Confirmation de votre don pour un puits - INOC France",
+                "emailType": "html",
+                "message": "=<h2>Merci pour votre générosité !</h2>\n<p>Bonjour {{$json.prenom}} {{$json.nom}},</p>\n<p>Nous avons bien reçu votre paiement de <strong>{{$json.amount / 100}}€</strong> pour le projet :</p>\n<p><strong>{{$json.productName}}</strong></p>\n<p>Au nom de : <strong>{{$json.beneficiaire}}</strong></p>\n<p>Votre don permettra de construire un puits et d'apporter de l'eau potable à des familles dans le besoin.</p>\n<p>Vous recevrez prochainement des photos et informations sur le puits construit grâce à votre contribution.</p>\n<br>\n<p><em>Ce don est déductible de vos impôts à hauteur de 66%.</em></p>\n<br>\n<p>Cordialement,<br>L'équipe INOC France</p>"
+            },
+            "id": "email-donateur",
+            "name": "Email au Donateur",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2,
+            "position": [
+                650,
+                400
+            ]
+        },
+        {
+            "parameters": {
+                "fromEmail": "noreply@innocentsfrance.org",
+                "toEmail": "contact@innocentsfrance.org",
+                "subject": "Nouveau don Puits - {{$json.amount / 100}}€",
+                "emailType": "html",
+                "message": "=<h2>Nouveau Don pour un Puits</h2>\n<p><strong>Donateur :</strong> {{$json.prenom}} {{$json.nom}}</p>\n<p><strong>Email :</strong> {{$json.email}}</p>\n<p><strong>Téléphone :</strong> {{$json.telephone}}</p>\n<p><strong>Montant :</strong> {{$json.amount / 100}}€</p>\n<p><strong>Projet :</strong> {{$json.productName}}</p>\n<p><strong>Au nom de :</strong> {{$json.beneficiaire}}</p>\n<p><strong>Stripe Session :</strong> {{$json.sessionId}}</p>"
+            },
+            "id": "email-equipe-puits",
+            "name": "Notification Équipe",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2,
+            "position": [
+                850,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { \"success\": true, \"message\": \"Don enregistré avec succès\" } }}"
+            },
+            "id": "response-success-puits",
+            "name": "Réponse Succès",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                1050,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { \"success\": false, \"message\": \"Paiement non validé\" } }}",
+                "options": {
+                    "responseCode": 400
+                }
+            },
+            "id": "response-error-puits",
+            "name": "Réponse Erreur",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                650,
+                600
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook Stripe Payment": {
+            "main": [
+                [
+                    {
+                        "node": "Vérifier Paiement Réussi",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Vérifier Paiement Réussi": {
+            "main": [
+                [
+                    {
+                        "node": "Enregistrer dans Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Email au Donateur",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Réponse Erreur",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Enregistrer dans Google Sheets": {
+            "main": [
+                [
+                    {
+                        "node": "Notification Équipe",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Email au Donateur": {
+            "main": [
+                [
+                    {
+                        "node": "Notification Équipe",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Notification Équipe": {
+            "main": [
+                [
+                    {
+                        "node": "Réponse Succès",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {}
+}

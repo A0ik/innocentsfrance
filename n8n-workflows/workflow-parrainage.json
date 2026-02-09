@@ -1,0 +1,240 @@
+{
+    "name": "Parrainage avec Mandat SEPA",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "parrainage",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "id": "webhook-parrainage",
+            "name": "Webhook Parrainage",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ],
+            "webhookId": "parrainage"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "string": [
+                        {
+                            "value1": "={{$json.email}}",
+                            "operation": "isNotEmpty"
+                        },
+                        {
+                            "value1": "={{$json.nom}}",
+                            "operation": "isNotEmpty"
+                        },
+                        {
+                            "value1": "={{$json.prenom}}",
+                            "operation": "isNotEmpty"
+                        },
+                        {
+                            "value1": "={{$json.donorIban}}",
+                            "operation": "isNotEmpty"
+                        }
+                    ]
+                }
+            },
+            "id": "validation",
+            "name": "Validation des données",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                450,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "VOTRE_GOOGLE_SHEET_ID",
+                    "mode": "list",
+                    "cachedResultName": "Parrainages"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "Sheet1",
+                    "mode": "list",
+                    "cachedResultName": "Sheet1"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Date": "={{$now.toISO()}}",
+                        "Prénom": "={{$json.prenom}}",
+                        "Nom": "={{$json.nom}}",
+                        "Email": "={{$json.email}}",
+                        "Téléphone": "={{$json.telephone}}",
+                        "Adresse": "={{$json.adresse}}",
+                        "Code Postal": "={{$json.codePostal}}",
+                        "Ville": "={{$json.ville}}",
+                        "Pays Parrainage": "={{$json.paysParrainage}}",
+                        "IBAN": "={{$json.donorIban}}",
+                        "BIC": "={{$json.donorBic}}",
+                        "Type": "Mandat SEPA"
+                    }
+                },
+                "options": {}
+            },
+            "id": "google-sheets",
+            "name": "Enregistrer dans Google Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4,
+            "position": [
+                650,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "fromEmail": "noreply@innocentsfrance.org",
+                "toEmail": "={{$json.email}}",
+                "subject": "Confirmation de votre parrainage - INOC France",
+                "emailType": "html",
+                "message": "=<h2>Merci pour votre engagement !</h2>\n<p>Bonjour {{$json.prenom}} {{$json.nom}},</p>\n<p>Nous avons bien reçu votre mandat de prélèvement SEPA pour le parrainage d'un orphelin en <strong>{{$json.paysParrainage}}</strong>.</p>\n<p>Montant mensuel : <strong>50€</strong></p>\n<p>Votre premier prélèvement sera effectué dans les prochains jours.</p>\n<p>Vous recevrez régulièrement des nouvelles de l'enfant parrainé.</p>\n<br>\n<p>Cordialement,<br>L'équipe INOC France</p>",
+                "options": {
+                    "attachments": "attachment"
+                },
+                "attachments": "={{$json.pdfMandat ? 'data:application/pdf;base64,' + $json.pdfMandat.split(',')[1] : ''}}"
+            },
+            "id": "email-parrain",
+            "name": "Email au Parrain",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2,
+            "position": [
+                650,
+                400
+            ]
+        },
+        {
+            "parameters": {
+                "fromEmail": "noreply@innocentsfrance.org",
+                "toEmail": "contact@innocentsfrance.org",
+                "subject": "Nouveau parrainage - {{$json.prenom}} {{$json.nom}}",
+                "emailType": "html",
+                "message": "=<h2>Nouveau Parrainage</h2>\n<p><strong>Parrain :</strong> {{$json.prenom}} {{$json.nom}}</p>\n<p><strong>Email :</strong> {{$json.email}}</p>\n<p><strong>Téléphone :</strong> {{$json.telephone}}</p>\n<p><strong>Pays :</strong> {{$json.paysParrainage}}</p>\n<p><strong>IBAN :</strong> {{$json.donorIban}}</p>\n<p><strong>BIC :</strong> {{$json.donorBic}}</p>\n<p>Le mandat SEPA signé est en pièce jointe.</p>",
+                "options": {
+                    "attachments": "attachment"
+                },
+                "attachments": "={{$json.pdfMandat ? 'data:application/pdf;base64,' + $json.pdfMandat.split(',')[1] : ''}}"
+            },
+            "id": "email-equipe",
+            "name": "Notification Équipe",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2,
+            "position": [
+                850,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { \"success\": true, \"message\": \"Parrainage enregistré avec succès\" } }}"
+            },
+            "id": "response-success",
+            "name": "Réponse Succès",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                1050,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { \"success\": false, \"message\": \"Données invalides\" } }}",
+                "options": {
+                    "responseCode": 400
+                }
+            },
+            "id": "response-error",
+            "name": "Réponse Erreur",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                650,
+                600
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook Parrainage": {
+            "main": [
+                [
+                    {
+                        "node": "Validation des données",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Validation des données": {
+            "main": [
+                [
+                    {
+                        "node": "Enregistrer dans Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Email au Parrain",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Réponse Erreur",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Enregistrer dans Google Sheets": {
+            "main": [
+                [
+                    {
+                        "node": "Notification Équipe",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Email au Parrain": {
+            "main": [
+                [
+                    {
+                        "node": "Notification Équipe",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Notification Équipe": {
+            "main": [
+                [
+                    {
+                        "node": "Réponse Succès",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {}
+}

@@ -152,7 +152,17 @@ export function ParrainageForm({ isOpen, onClose }: ParrainageFormProps) {
                     name: `${formData.prenom} ${formData.nom}`,
                     amount: 5000, // 50.00 EUR
                     productName: "Parrainage Orphelin (Mensuel)",
-                    mode: "subscription"
+                    mode: "subscription",
+                    formType: "parrainage",
+                    formData: {
+                        nom: formData.nom,
+                        prenom: formData.prenom,
+                        adresse: formData.adresse,
+                        codePostal: formData.codePostal,
+                        ville: formData.ville,
+                        telephone: formData.telephone,
+                        paymentMethod: "stripe"
+                    }
                 }),
             });
 
@@ -265,42 +275,62 @@ export function ParrainageForm({ isOpen, onClose }: ParrainageFormProps) {
     const handleSubmit = async () => {
         setLoading(true)
 
-        // Prepare Payload
-        const payload: any = { ...formData }
-        if (signatureData) {
-            payload.signature = signatureData; // Base64 signature
-        }
-
-        if (pdfBlob) {
-            const reader = new FileReader();
-            reader.readAsDataURL(pdfBlob);
-            reader.onloadend = async () => {
-                const base64data = reader.result;
-                payload.pdfMandat = base64data;
-
-                await sendToN8N(payload);
-            }
-        } else {
-            await sendToN8N(payload);
-        }
-    }
-
-    const sendToN8N = async (payload: any) => {
         try {
-            await fetch("http://51.210.247.53:5678/webhook/parrainage", {
+            // Convert PDF blob to base64 for attachment
+            let pdfBase64: string | null = null
+            if (pdfBlob) {
+                pdfBase64 = await new Promise<string>((resolve) => {
+                    const reader = new FileReader()
+                    reader.readAsDataURL(pdfBlob)
+                    reader.onloadend = () => {
+                        // Remove the data:application/pdf;base64, prefix
+                        const result = reader.result as string
+                        resolve(result.split(',')[1])
+                    }
+                })
+            }
+
+            const emailPayload: any = {
+                subject: `[PARRAINAGE SEPA] Nouveau mandat - ${formData.prenom} ${formData.nom}`,
+                html: `
+                    <h2>Nouveau mandat de pr\u00e9l\u00e8vement SEPA</h2>
+                    <p>Un nouveau mandat SEPA a \u00e9t\u00e9 sign\u00e9 et valid\u00e9. Le document PDF est en pi\u00e8ce jointe.</p>
+                    <table style="border-collapse: collapse; width: 100%;">
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Nom</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.prenom} ${formData.nom}</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Email</td><td style="padding: 8px; border: 1px solid #ddd;"><a href="mailto:${formData.email}">${formData.email}</a></td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">T\u00e9l\u00e9phone</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.telephone}</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Adresse</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.adresse}, ${formData.codePostal} ${formData.ville}</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">IBAN</td><td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${formData.donorIban.toUpperCase()}</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">BIC</td><td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;">${formData.donorBic.toUpperCase()}</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Montant</td><td style="padding: 8px; border: 1px solid #ddd;">50\u20ac / mois</td></tr>
+                    </table>
+                `,
+            }
+
+            if (pdfBase64) {
+                emailPayload.attachments = [{
+                    filename: `mandat-sepa-${formData.nom}-${formData.prenom}.pdf`,
+                    content: pdfBase64,
+                }]
+            }
+
+            const response = await fetch('/api/send-email', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(emailPayload),
             })
-            // Success
-            onClose()
-            setLoading(false)
-            alert("Merci ! Votre mandat a été validé et envoyé.")
 
+            if (response.ok) {
+                onClose()
+                setLoading(false)
+                alert("Merci ! Votre mandat a \u00e9t\u00e9 valid\u00e9 et envoy\u00e9.")
+            } else {
+                throw new Error("Erreur serveur")
+            }
         } catch (error) {
-            console.error("Error sending to n8n:", error)
+            console.error("Error sending email:", error)
             setLoading(false)
-            alert("Erreur lors de l'envoi. Veuillez réessayer.")
+            alert("Erreur lors de l'envoi. Veuillez r\u00e9essayer.")
         }
     }
 

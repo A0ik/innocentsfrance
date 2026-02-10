@@ -47,12 +47,23 @@ export default function ContactPage() {
         setError("");
 
         try {
-            const response = await fetch("http://51.210.247.53:5678/webhook/contact", {
+            const response = await fetch('/api/send-email', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    subject: `[Contact] ${formData.sujet} - ${formData.nom}`,
+                    html: `
+                        <h2>Nouveau message de contact</h2>
+                        <table style="border-collapse: collapse; width: 100%;">
+                            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Nom</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.nom}</td></tr>
+                            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Email</td><td style="padding: 8px; border: 1px solid #ddd;"><a href="mailto:${formData.email}">${formData.email}</a></td></tr>
+                            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Sujet</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.sujet}</td></tr>
+                            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Message</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.message.replace(/\n/g, '<br>')}</td></tr>
+                        </table>
+                    `,
+                }),
             });
 
             if (response.ok) {

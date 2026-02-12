@@ -76,21 +76,14 @@ export default function ParrainagePage() {
 
                 {/* Video 2 Section */}
                 <div className="mb-24">
-                    <div className="bg-gray-900 rounded-3xl overflow-hidden relative aspect-video shadow-2xl group cursor-pointer">
-                        <div className="absolute inset-0 flex items-center justify-center z-10">
-                            <PlayCircle className="w-20 h-20 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all" />
-                        </div>
-                        <Image
-                            src="/images/parrainage-hero.jpg" // Placeholder thumbnail
-                            alt="Vidéo Parrainage"
-                            fill
-                            className="object-cover opacity-60 group-hover:opacity-80 transition-opacity"
-                        />
-                        {/* Placeholder for Video 2 */}
-                        <div className="absolute bottom-6 left-6 text-white z-10">
-                            <h3 className="text-2xl font-bold">Découvrez l'impact du parrainage</h3>
-                            <p className="opacity-80">Témoignages et immersion</p>
-                        </div>
+                    <div className="rounded-3xl overflow-hidden shadow-2xl relative aspect-video w-full bg-black">
+                        <video
+                            controls
+                            className="w-full h-full object-cover"
+                        >
+                            <source src="/video2.mp4" type="video/mp4" />
+                            Votre navigateur ne supporte pas la vidéo.
+                        </video>
                     </div>
                 </div>
 

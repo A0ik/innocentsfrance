@@ -59,13 +59,12 @@ export default function Home() {
       <ScrollReveal width="100%">
         <div className="flex flex-col items-center justify-center pt-12 pb-12 mt-10 bg-background relative z-20">
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center w-full px-4">
-            <a
-              href="https://pay.sumup.com/b2c/QTYMONDZ"
-              target="_blank"
+            <Link
+              href="/don"
               className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-primary/90 transition-all hover:scale-105 shadow-xl border-2 border-transparent w-full md:w-auto text-center"
             >
               Faire un don
-            </a>
+            </Link>
             <Link
               href="/parrainage"
               className="bg-white text-primary border-2 border-primary/10 px-8 py-3 rounded-full font-bold hover:bg-gray-50 transition-all hover:scale-105 shadow-xl w-full md:w-auto text-center"
@@ -162,7 +161,7 @@ export default function Home() {
               <div className="flex-1 w-full max-w-md">
                 <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl relative border-4 border-white/20">
                   <Image
-                    src="https://placehold.co/600x800/1e40af/ffffff?text=Enfant+Souriant"
+                    src="/images/enfant-parrainé.jpg"
                     alt="Enfant parrainé"
                     fill
                     className="object-cover"
@@ -187,7 +186,7 @@ export default function Home() {
               <Link href="/colis" className="group h-full block">
                 <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100 h-full flex flex-col">
                   <div className="h-48 bg-gray-200 relative overflow-hidden">
-                    <Image src="https://placehold.co/600x400/orange/white?text=Colis+Alimentaire" alt="Colis" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src="/images/colisali.jpg" alt="Colis" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-6 flex-1 flex flex-col">
                     <Gift className="w-8 h-8 text-secondary mb-4" />
@@ -205,7 +204,7 @@ export default function Home() {
               <Link href="/puits" className="group h-full block">
                 <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100 h-full flex flex-col">
                   <div className="h-48 bg-gray-200 relative overflow-hidden">
-                    <Image src="https://placehold.co/600x400/blue/white?text=Puits" alt="Puits" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src="/images/puithome.jpeg" alt="Puits" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-6 flex-1 flex flex-col">
                     <Droplets className="w-8 h-8 text-secondary mb-4" />
@@ -223,7 +222,7 @@ export default function Home() {
               <Link href="/don" className="group h-full block">
                 <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all border border-gray-100 h-full flex flex-col">
                   <div className="h-48 bg-gray-200 relative overflow-hidden">
-                    <Image src="https://placehold.co/600x400/green/white?text=Don+Libre" alt="Don Libre" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src="/images/donlibre.webp" alt="Don Libre" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <div className="p-6 flex-1 flex flex-col">
                     <Heart className="w-8 h-8 text-secondary mb-4" />

@@ -1,60 +1,61 @@
-# Guide des Images et Vidéos
+# Guide des Images et Médiathèque
 
-Pour que le site s'affiche correctement avec vos propres visuels, merci de placer les fichiers suivants dans le dossier `public` de votre projet.
+Pour que votre site s'affiche parfaitement, assurez-vous que les fichiers ci-dessous sont présents dans le dossier `public` (et `public/images`).
+**Important :** Respectez scrupuleusement les noms de fichiers et les extensions (jpg, jpeg, png, webp).
 
-## 1. Logo & Vidéo & Hero
-Ces éléments sont critiques pour la page d'accueil.
-- **Logo :** `logo.jpeg`
-  - **Emplacement :** `public/logo.jpeg`
-  - **Usage :** Logo standard.
-- **Image Hero (NOUVEAU) :** `hero-bg.jpg`
-  - **Emplacement :** `public/images/hero-bg.jpg`
-  - **Usage :** Grande image de fond de la nouvelle section Hero (haut de page). Doit être sombre ou avoir un filtre pour que le texte blanc soit lisible.
-- **Vidéo Présentation :** `video.mp4`
-  - **Emplacement :** `public/video.mp4`
-  - **Usage :** Vidéo qui se joue désormais dans sa propre section, avant les actions terrain.
+## 1. Logo & Vidéos (Racine `public/`)
+| Fichier | Usage |
+|---|---|
+| `logo.jpeg` | Logo principal du site |
+| `video.mp4` | Vidéo d'accueil (Hero) |
+| `video2.mp4` | Vidéo page Parrainage (NOUVEAU) |
 
-## 2. Page Accueil
-| Nom du fichier | Emplacement | Usage |
-|---|---|---|
-| `maroc.jpg` | `public/images/maroc.jpg` | Carte Maroc |
-| `senegal.jpg` | `public/images/senegal.jpg` | Carte Sénégal |
-| `tchad.jpg` | `public/images/tchad.jpg` | Carte Tchad |
-| `gaza.jpg` | `public/images/gaza.jpg` | Carte Gaza |
-| `soudan.jpg` | `public/images/soudan.jpg` | Carte Soudan |
-| `inde.jpg` | `public/images/inde.jpg` | Carte Inde |
-| `pakistan.jpg` | `public/images/pakistan.jpg` | Carte Pakistan |
-| `parrainage-home.jpg` | `public/images/parrainage-home.jpg` | Encart Parrainage (enfant souriant) |
+---
 
-## 3. Page Parrainage
-| Nom du fichier | Emplacement | Usage |
-|---|---|---|
-| `parrainage-hero.jpg` | `public/images/parrainage-hero.jpg` | Grande image du haut |
-| `enfant-ecole.jpg` | `public/images/enfant-ecole.jpg` | Section "Pourquoi parrainer" |
-| `temoignage-sarah.jpg` | `public/images/temoignage-sarah.jpg` | Photo témoignage Sarah |
-| `temoignage-karim.jpg` | `public/images/temoignage-karim.jpg` | Photo témoignage Karim |
+## 2. Dossier `public/images/`
 
-## 4. Page Colis
-| Nom du fichier | Emplacement | Usage |
-|---|---|---|
-| `colis-gaza.jpg` | `public/images/colis-gaza.jpg` | Section Gaza |
-| `colis-maroc.jpg` | `public/images/colis-maroc.jpg` | Section Maroc |
+### A. Page d'Accueil
+**Fonds & Cartes :**
+- `hero-bg.jpg` : Fond d'écran principal (haut de page).
+- `maroc.jpg`, `senegal.jpg`, `tchad.jpg`, `soudan.jpg`, `gaza.jpg`, `pakistan.jpg` : Images des cartes pays.
 
-## 5. Page Puits
-| Nom du fichier | Emplacement | Usage |
-|---|---|---|
-| `puits-tchad.jpg` | `public/images/puits-tchad.jpg` | Section Tchad |
-| `puits-pakistan.jpg` | `public/images/puits-pakistan.jpg` | Section Pakistan |
-| `puits-1.jpg` | `public/images/puits-1.jpg` | Galerie Puits (Image 1) |
-| `puits-2.jpg` | `public/images/puits-2.jpg` | Galerie Puits (Image 2) |
-| `puits-3.jpg` | `public/images/puits-3.jpg` | Galerie Puits (Image 3) |
+**Sections Projets (Mise à jour) :**
+- `enfant-parrainé.jpg` : Section "Parrainer un orphelin".
+- `colisali.jpg` : Section "Colis Alimentaires".
+- `puithome.jpeg` : Section "Construction de Puits".
+- `donlibre.webp` : Section "Don Libre".
 
-## 6. Page Don & A Propos
-| Nom du fichier | Emplacement | Usage |
-|---|---|---|
-| `don-hero.jpg` | `public/images/don-hero.jpg` | Fond page Don |
-| `about-hero.jpg` | `public/images/about-hero.jpg` | Fond page Qui Sommes-nous |
-| `equipe.jpg` | `public/images/equipe.jpg` | Photo d'équipe (section histoire) |
+### B. Page Parrainage
+- `parrainage-hero.jpg` : Grande image du haut.
+- `enfant-ecole.jpg` : Section "Pourquoi parrainer".
+- `temoignage-sarah.jpg` : Photo témoignage Sarah.
+- `temoignage-karim.jpg` : Photo témoignage Karim.
+
+### C. Page Colis
+- `colisgaza.jpeg` : Section Gaza (Urgence).
+- `colismaroc.jpg` : Section Maroc.
+- **Galerie Distribution (NOUVEAU) :**
+  - `colis-distrib-1.jpg`
+  - `colis-distrib-2.jpg`
+  - `colis-distrib-3.jpg`
+  - `colis-distrib-4.jpg`
+
+### D. Page Puits
+- `puits-tchad.jpg` : Section Tchad.
+- `puits-pakistan.png` : Section Pakistan (**Attention: .png**).
+- **Galerie Puits :**
+  - `puit1.jpeg`
+  - `puit2.jpeg`
+  - `puit3.jpeg`
+
+### E. Pages Don & A Propos
+- `don-hero.jpg` : Fond page Don.
+- `about-hero.jpg` : Fond page Qui Sommes-nous.
+
+---
 
 > [!TIP]
-> **Format recommandé :** Utilisez le format `.jpg` ou `.webp` pour les images afin d'optimiser le chargement. Assurez-vous que les images "Hero" (grands fonds d'écran) sont de haute qualité (ex: 1920x1080px).
+> **Tailles recommandées :**
+> - Fonds d'écran (Hero) : 1920x1080 px (Haute qualité).
+> - Cartes & Sections : 800x600 px ou 600x400 px.
+> - Poids : Essayez de garder les images sous 200ko pour que le site reste rapide.

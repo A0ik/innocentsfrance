@@ -64,7 +64,7 @@ export default function ColisPage() {
                 <section className="grid md:grid-cols-2 gap-12 items-center">
                     <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl order-2 md:order-1">
                         <Image
-                            src="/images/colis-gaza.jpg"
+                            src="/images/colisgaza.jpeg"
                             alt="Colis Gaza"
                             fill
                             className="object-cover"
@@ -135,7 +135,7 @@ export default function ColisPage() {
                     </div>
                     <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl order-2">
                         <Image
-                            src="/images/colis-maroc.jpg"
+                            src="/images/colismaroc.jpg"
                             alt="Colis Maroc"
                             fill
                             className="object-cover"
@@ -150,7 +150,7 @@ export default function ColisPage() {
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className="relative h-48 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
                                 <Image
-                                    src={`https://placehold.co/400x400/ccc/777?text=Photo+${i}`}
+                                    src={`/images/colis-distrib-${i}.jpg`}
                                     alt={`Distribution ${i}`}
                                     fill
                                     className="object-cover"

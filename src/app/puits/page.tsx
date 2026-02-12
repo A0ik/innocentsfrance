@@ -110,7 +110,7 @@ export default function PuitsPage() {
                         </div>
                         <div className="relative h-[300px] md:h-auto order-1 md:order-2">
                             <Image
-                                src="/images/puits-pakistan.jpg"
+                                src="/images/puits-pakistan.png"
                                 alt="Puits Pakistan"
                                 fill
                                 className="object-cover"
@@ -129,7 +129,7 @@ export default function PuitsPage() {
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="relative aspect-video rounded-xl overflow-hidden shadow-lg">
                                 <Image
-                                    src={`/images/puits-${i}.jpg`}
+                                    src={`/images/puit${i}.jpeg`}
                                     alt={`Puits réalisé ${i}`}
                                     fill
                                     className="object-cover hover:scale-105 transition-transform"
@@ -157,7 +157,7 @@ export default function PuitsPage() {
             </div>
 
             {/* CORRECTION: Ajouter le composant PuitsForm ici */}
-            <PuitsForm 
+            <PuitsForm
                 isOpen={isFormOpen}
                 onClose={() => setIsFormOpen(false)}
                 amount={selectedAmount}

@@ -37,7 +37,11 @@ export default function ColisPage() {
                 body: JSON.stringify({
                     amount,
                     productName,
-                    mode: 'payment'
+                    mode: 'payment',
+                    formType: 'colis',
+                    formData: {
+                        productName,
+                    }
                 }),
             });
             const { url } = await response.json();

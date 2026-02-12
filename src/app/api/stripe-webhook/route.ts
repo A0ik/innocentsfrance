@@ -35,6 +35,7 @@ async function sendBrevoEmail(subject: string, html: string) {
 function buildEmailHtml(formType: string, formData: any, session: Stripe.Checkout.Session): string {
     const amount = session.amount_total ? (session.amount_total / 100).toFixed(2) : 'N/A';
     const mode = session.mode === 'subscription' ? 'Abonnement mensuel' : 'Paiement unique';
+    const email = formData.email || session.customer_email || 'N/A';
 
     let title = 'Nouveau paiement';
     if (formType === 'parrainage') title = 'Nouveau Parrainage (CB)';
@@ -42,27 +43,46 @@ function buildEmailHtml(formType: string, formData: any, session: Stripe.Checkou
     else if (formType === 'don') title = 'Nouveau Don';
     else if (formType === 'colis') title = 'Nouveau Colis alimentaire';
 
-    let specificFields = '';
-    if (formType === 'puits' && formData.beneficiaire) {
-        specificFields = `<tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Bénéficiaire (plaque)</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.beneficiaire}</td></tr>`;
-    }
+    const row = (label: string, value: string) =>
+        `<tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">${label}</td><td style="padding: 8px; border: 1px solid #ddd;">${value}</td></tr>`;
+
+    let rows = '';
+    rows += row('Montant', `${amount}€`);
+    rows += row('Type', mode);
+
     if (formData.productName) {
-        specificFields += `<tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Produit</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.productName}</td></tr>`;
+        rows += row('Produit', formData.productName);
     }
 
+    const fullName = `${formData.prenom || ''} ${formData.nom || ''}`.trim();
+    if (fullName) {
+        rows += row('Nom', fullName);
+    }
+
+    rows += row('Email', `<a href="mailto:${email}">${email}</a>`);
+
+    if (formData.telephone) {
+        rows += row('Téléphone', formData.telephone);
+    }
+
+    const adresse = [formData.adresse, formData.codePostal, formData.ville].filter(Boolean).join(', ');
+    if (adresse) {
+        rows += row('Adresse', adresse);
+    }
+
+    if (formType === 'puits' && formData.beneficiaire) {
+        rows += row('Bénéficiaire (plaque)', formData.beneficiaire);
+    }
+
+    rows += row('ID Stripe', session.id);
+
     return `
-        <h2>${title}</h2>
-        <p style="color: green; font-weight: bold;">Paiement validé avec succès</p>
-        <table style="border-collapse: collapse; width: 100%;">
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Montant</td><td style="padding: 8px; border: 1px solid #ddd;">${amount}€</td></tr>
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Type</td><td style="padding: 8px; border: 1px solid #ddd;">${mode}</td></tr>
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Nom</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.prenom || ''} ${formData.nom || ''}</td></tr>
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Email</td><td style="padding: 8px; border: 1px solid #ddd;"><a href="mailto:${formData.email || session.customer_email}">${formData.email || session.customer_email}</a></td></tr>
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Téléphone</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.telephone || 'N/A'}</td></tr>
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Adresse</td><td style="padding: 8px; border: 1px solid #ddd;">${formData.adresse || ''}, ${formData.codePostal || ''} ${formData.ville || ''}</td></tr>
-            ${specificFields}
-            <tr><td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">ID Stripe</td><td style="padding: 8px; border: 1px solid #ddd;">${session.id}</td></tr>
+        <h2 style="color: #1a1a2e;">${title}</h2>
+        <p style="color: green; font-weight: bold;">&#9989; Paiement validé avec succès</p>
+        <table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+            ${rows}
         </table>
+        <p style="color: #888; font-size: 12px; margin-top: 16px;">Email généré automatiquement après validation du paiement Stripe.</p>
     `;
 }
 
@@ -99,8 +119,11 @@ export async function POST(request: Request) {
                 try {
                     const html = buildEmailHtml(formType, formData, session);
 
+                    const donorName = `${formData.prenom || ''} ${formData.nom || ''}`.trim();
+                    const subjectSuffix = donorName || session.customer_email || 'Anonyme';
+
                     await sendBrevoEmail(
-                        `[${formType.toUpperCase()}] Paiement validé - ${formData.prenom || ''} ${formData.nom || ''}`,
+                        `[${formType.toUpperCase()}] Paiement validé - ${subjectSuffix}`,
                         html
                     );
 

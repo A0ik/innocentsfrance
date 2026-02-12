@@ -57,7 +57,11 @@ export default function DonPage() {
                                         body: JSON.stringify({
                                             amount: amount * 100, // Convert to cents
                                             productName: "Don Libre",
-                                            mode: 'payment'
+                                            mode: 'payment',
+                                            formType: 'don',
+                                            formData: {
+                                                productName: "Don Libre",
+                                            }
                                         }),
                                     });
                                     const { url } = await response.json();

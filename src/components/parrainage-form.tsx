@@ -192,7 +192,7 @@ export function ParrainageForm({ isOpen, onClose }: ParrainageFormProps) {
         // --- Header ---
         doc.setFontSize(10);
         doc.text(`Créancier : Association Innocents France`, 15, 15);
-        doc.text(`Identifiant Créancier SEPA (ICS) : FRXXXXXXXXXXXXXXXX`, 110, 15); // Placeholder ICS
+        doc.text(`Identifiant Créancier SEPA (ICS) : FR67ZZZ8AD398`, 110, 15);
 
         doc.text(`4 RUE DU DOCTEUR SCHWEITZER`, 15, 20);
         doc.text(`91430 IGNY`, 15, 25);

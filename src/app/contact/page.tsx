@@ -121,7 +121,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-gray-900">Adresse</h3>
-                                    <p className="text-gray-600">10 Rue de la Solidarité<br />75000 Paris, France</p>
+                                    <p className="text-gray-600">4 RUE DU DOCTEUR SCHWEITZER<br />91430 IGNY</p>
                                 </div>
                             </div>
 

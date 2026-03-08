@@ -64,9 +64,10 @@ export async function POST(request: Request) {
             },
         };
 
+        // Carte bancaire pour tous les modes (paiement unique et abonnement)
+        sessionParams.payment_method_types = ['card'];
+
         if (isSubscription) {
-            // Abonnement : carte uniquement (PayPal non supporté pour le récurrent)
-            sessionParams.payment_method_types = ['card'];
             // Propager les métadonnées à l'abonnement pour les renouvellements
             sessionParams.subscription_data = {
                 metadata: {
@@ -74,9 +75,6 @@ export async function POST(request: Request) {
                     formData: JSON.stringify(formData || {}),
                 },
             };
-        } else {
-            // Paiement unique : toutes méthodes activées (CB, PayPal, Apple Pay…)
-            (sessionParams as any).automatic_payment_methods = { enabled: true };
         }
 
         const session = await stripe.checkout.sessions.create(sessionParams);

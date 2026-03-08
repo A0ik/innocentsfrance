@@ -13,23 +13,26 @@ export async function POST(request: Request) {
         const qty = Math.max(1, parseInt(quantity) || 1);
 
         // ─── Identité client ────────────────────────────────────────────────────
-        // Pour les abonnements (parrainage) : créer un Customer Stripe avec le
-        // téléphone et le nom → ils apparaissent dans le dashboard Stripe
-        let customerParam: { customer: string } | { customer_email: string } = { customer_email: email || '' };
+        // On n'inclut customer_email que si l'email est réellement fourni
+        // (une chaîne vide ferait échouer la validation Stripe)
+        let customerParam: Record<string, string> = email
+            ? { customer_email: email }
+            : {};
 
         if (isSubscription && formData) {
             try {
-                const customerCreateParams: Stripe.CustomerCreateParams = { email };
+                const customerCreateParams: Stripe.CustomerCreateParams = {};
+                if (email) customerCreateParams.email = email;
                 const fullName = [formData.prenom, formData.nom].filter(Boolean).join(' ');
                 if (fullName) customerCreateParams.name = fullName;
                 if (formData.telephone) customerCreateParams.phone = formData.telephone;
                 customerCreateParams.metadata = { formType: formType || 'parrainage' };
 
                 const customer = await stripe.customers.create(customerCreateParams);
-                customerParam = { customer: customer.id };
+                customerParam = { customer: customer.id } as any;
             } catch (err) {
                 console.error('Customer creation failed, falling back to customer_email:', err);
-                customerParam = { customer_email: email || '' };
+                customerParam = email ? { customer_email: email } : {} as any;
             }
         }
 

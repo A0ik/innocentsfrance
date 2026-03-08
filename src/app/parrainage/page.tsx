@@ -62,7 +62,6 @@ export default function ParrainagePage() {
                             <Heart className="fill-current" />
                             Parrainer maintenant (50€/mois)
                         </button>
-                        <p className="mt-4 text-sm text-gray-500 italic">Reçu fiscal annuel disponible.</p>
                     </div>
                     <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
                         <Image
@@ -118,7 +117,7 @@ export default function ParrainagePage() {
                             </p>
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden relative">
-                                    <Image src="/images/temoignage-sarah.jpg" alt="Sarah" fill className="object-cover" />
+                                    <Image src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="Sarah" fill className="object-cover" />
                                 </div>
                                 <div>
                                     <p className="font-bold text-primary">Sarah L.</p>
@@ -133,7 +132,7 @@ export default function ParrainagePage() {
                             </p>
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden relative">
-                                    <Image src="/images/temoignage-karim.jpg" alt="Karim" fill className="object-cover" />
+                                    <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Karim" fill className="object-cover" />
                                 </div>
                                 <div>
                                     <p className="font-bold text-primary">Karim B.</p>

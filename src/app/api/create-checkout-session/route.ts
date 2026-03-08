@@ -2,15 +2,39 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
-    apiVersion: '2025-02-24.acacia' as any, // Bypass strict version check to avoid build errors with latest SDK
+    apiVersion: '2025-02-24.acacia' as any,
 });
 
 export async function POST(request: Request) {
     try {
-        const { email, name, amount, productName, mode, formType, formData } = await request.json();
+        const { email, amount, productName, mode, formType, formData, quantity } = await request.json();
 
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
+        const isSubscription = mode === 'subscription';
+        const qty = Math.max(1, parseInt(quantity) || 1);
+
+        // ─── Identité client ────────────────────────────────────────────────────
+        // Pour les abonnements (parrainage) : créer un Customer Stripe avec le
+        // téléphone et le nom → ils apparaissent dans le dashboard Stripe
+        let customerParam: { customer: string } | { customer_email: string } = { customer_email: email || '' };
+
+        if (isSubscription && formData) {
+            try {
+                const customerCreateParams: Stripe.CustomerCreateParams = { email };
+                const fullName = [formData.prenom, formData.nom].filter(Boolean).join(' ');
+                if (fullName) customerCreateParams.name = fullName;
+                if (formData.telephone) customerCreateParams.phone = formData.telephone;
+                customerCreateParams.metadata = { formType: formType || 'parrainage' };
+
+                const customer = await stripe.customers.create(customerCreateParams);
+                customerParam = { customer: customer.id };
+            } catch (err) {
+                console.error('Customer creation failed, falling back to customer_email:', err);
+                customerParam = { customer_email: email || '' };
+            }
+        }
+
+        // ─── Paramètres de session ──────────────────────────────────────────────
+        const sessionParams: Stripe.Checkout.SessionCreateParams = {
             line_items: [
                 {
                     price_data: {
@@ -19,25 +43,40 @@ export async function POST(request: Request) {
                             name: productName || 'Don - Association Innocents France',
                             description: `Soutien pour : ${productName || 'Donation'}`,
                         },
-                        unit_amount: amount || 5000, // Default to 5000 (50€) if not provided
-                        ...(mode === 'subscription' && {
-                            recurring: {
-                                interval: 'month',
-                            },
+                        unit_amount: amount || 5000,
+                        ...(isSubscription && {
+                            recurring: { interval: 'month' },
                         }),
                     },
-                    quantity: 1,
+                    quantity: qty,
                 },
             ],
-            mode: mode || 'payment', // 'payment' (one-time) or 'subscription'
-            success_url: `${request.headers.get('origin')}/?success=true`, // Redirects to Home or specific page
+            mode: isSubscription ? 'subscription' : 'payment',
+            success_url: `${request.headers.get('origin')}/?success=true`,
             cancel_url: `${request.headers.get('origin')}/?canceled=true`,
-            customer_email: email,
+            ...customerParam,
             metadata: {
                 formType: formType || 'don',
                 formData: JSON.stringify(formData || {}),
             },
-        });
+        };
+
+        if (isSubscription) {
+            // Abonnement : carte uniquement (PayPal non supporté pour le récurrent)
+            sessionParams.payment_method_types = ['card'];
+            // Propager les métadonnées à l'abonnement pour les renouvellements
+            sessionParams.subscription_data = {
+                metadata: {
+                    formType: formType || 'don',
+                    formData: JSON.stringify(formData || {}),
+                },
+            };
+        } else {
+            // Paiement unique : toutes méthodes activées (CB, PayPal, Apple Pay…)
+            (sessionParams as any).automatic_payment_methods = { enabled: true };
+        }
+
+        const session = await stripe.checkout.sessions.create(sessionParams);
 
         return NextResponse.json({ url: session.url });
     } catch (error: any) {

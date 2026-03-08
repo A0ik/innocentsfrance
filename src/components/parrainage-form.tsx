@@ -157,6 +157,7 @@ export function ParrainageForm({ isOpen, onClose }: ParrainageFormProps) {
                     formData: {
                         nom: formData.nom,
                         prenom: formData.prenom,
+                        email: formData.email,
                         adresse: formData.adresse,
                         codePostal: formData.codePostal,
                         ville: formData.ville,

@@ -65,7 +65,7 @@ export default function ParrainagePage() {
                     </div>
                     <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
                         <Image
-                            src="/images/enfant-ecole.jpg"
+                            src="/images/enfant-ecole.JPG"
                             alt="Enfant à l'école"
                             fill
                             className="object-cover"

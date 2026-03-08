@@ -184,12 +184,12 @@ export default function ColisPage() {
                             <ShoppingBasket className="w-5 h-5 text-red-500" />
                             <span className="text-sm font-semibold text-red-500 uppercase tracking-wide">Situation critique</span>
                         </div>
-                        <h2 className="text-3xl font-bold text-primary mb-2">Colis Ramadan Gaza</h2>
+                        <h2 className="text-3xl font-bold text-primary mb-2">Colis Ramadan </h2>
                         <div className="text-4xl font-bold text-secondary mb-5">
                             60 € <span className="text-base text-gray-400 font-normal">/ colis</span>
                         </div>
                         <p className="text-gray-700 mb-4 leading-relaxed">
-                            La situation à Gaza est critique. Votre don permet de fournir un colis alimentaire complet (farine, huile, riz, sucre, dattes) pour qu'une famille se nourrisse dignement pendant un mois.
+                            Votre don permet de fournir un colis alimentaire complet (farine, huile, riz, sucre, dattes) pour qu'une famille se nourrisse dignement pendant un mois.
                         </p>
                         <ul className="space-y-2 mb-2">
                             {["1 colis = 1 mois de nourriture pour une famille", "Distribution immédiate sur le terrain"].map(item => (
@@ -223,7 +223,7 @@ export default function ColisPage() {
                             ) : (
                                 <>
                                     <ShoppingBasket className="w-5 h-5" />
-                                    Offrir {qtyGaza} colis à Gaza — {qtyGaza * 60}€
+                                    Offrir {qtyGaza} colis — {qtyGaza * 60}€
                                 </>
                             )}
                         </button>

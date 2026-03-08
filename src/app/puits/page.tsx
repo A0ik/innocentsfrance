@@ -122,6 +122,53 @@ export default function PuitsPage() {
                     </div>
                 </div>
 
+                {/* Maroc Section */}
+                <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+                    <div className="grid md:grid-cols-2">
+                        <div className="relative h-[300px] md:h-auto">
+                            <Image
+                                src="/images/maroc.jpg"
+                                alt="Puits Maroc"
+                                fill
+                                className="object-cover"
+                            />
+                            <div className="absolute top-0 left-0 bg-green-700/90 text-white px-6 py-2 rounded-br-2xl font-bold">
+                                MAROC
+                            </div>
+                        </div>
+                        <div className="p-8 md:p-12">
+                            <h2 className="text-3xl font-bold text-primary mb-2">Puits Villageois au Maroc</h2>
+                            <div className="text-3xl font-bold text-secondary mb-6">3 500 € <span className="text-lg text-gray-500 font-normal">/ puits</span></div>
+
+                            <div className="space-y-4 mb-8">
+                                <p className="text-gray-700">
+                                    Dans les villages reculés du Maroc, notamment dans les zones montagneuses de l'Atlas, l'eau potable reste inaccessible. Ce puits offre une source d'eau durable à tout un village.
+                                </p>
+                                <div className="flex items-center gap-3 text-gray-600">
+                                    <Users className="w-5 h-5 text-secondary" />
+                                    <span>Bénéficiaires : 30 à 80 familles</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-gray-600">
+                                    <MapPin className="w-5 h-5 text-secondary" />
+                                    <span>Zone : Atlas, villages ruraux isolés</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-gray-600">
+                                    <Droplets className="w-5 h-5 text-secondary" />
+                                    <span>Durée de vie : +15 ans avec entretien</span>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => openForm(350000, "Puits Maroc")}
+                                className="inline-block w-full text-center bg-green-700 text-white px-8 py-4 rounded-xl font-bold hover:bg-green-700/90 transition-all hover:scale-[1.02] shadow-md"
+                            >
+                                Financer un puits au Maroc (3 500€)
+                            </button>
+                            <p className="text-center text-xs text-gray-400 mt-2">*Financement participatif possible</p>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Gallery */}
                 <div className="text-center pt-8">
                     <h2 className="text-2xl font-bold text-primary mb-8">Puits Réalisés</h2>

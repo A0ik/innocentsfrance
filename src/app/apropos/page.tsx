@@ -69,7 +69,7 @@ export default function ProposPage() {
                         </div>
                         <div className="mt-8 z-20 relative pt-[300px]">
                             <p className="bg-white/90 text-primary px-6 py-2 rounded-full font-bold shadow-lg backdrop-blur-sm mx-auto max-w-fit">
-                                Maroc • Sénégal • Tchad • Gaza • Soudan • Pakistan • Maroc
+                                Maroc • Sénégal • Tchad • Soudan • Gaza • Pakistan
                             </p>
                         </div>
                     </div>

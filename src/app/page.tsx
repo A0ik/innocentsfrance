@@ -3,19 +3,19 @@
 import { ScrollVelocity } from "@/components/ui/scroll-velocity";
 import { ProfessionalHero } from "@/components/ui/professional-hero";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
-import { CountryCard } from "@/components/ui/country-card";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { ArrowRight, Heart, Droplets, Gift } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const countries = [
-  { name: "Maroc", image: "/images/maroc.jpg", desc: "Aide aux familles et orphelins dans les zones rurales." },
-  { name: "Sénégal", image: "/images/senegal.jpg", desc: "Soutien éducatif et alimentaire." },
-  { name: "Tchad", image: "/images/tchad.jpg", desc: "Construction de puits et accès à l'eau." },
-  { name: "Soudan", image: "/images/soudan.jpg", desc: "Soutien aux réfugiés et aide médicale." },
-  { name: "Gaza", image: "/images/gaza.jpg", desc: "Parrainage d'orphelins, éducation et colis alimentaires." },
-  { name: "Pakistan", image: "/images/pakistan.jpg", desc: "Accès à l'eau et aide aux veuves." },
+const actions = [
+  { num: "01", name: "Maroc", desc: "Aide aux familles, orphelins et veuves dans les zones rurales de l'Atlas.", link: "/colis" },
+  { num: "02", name: "Sénégal", desc: "Soutien éducatif et alimentaire aux enfants et familles dans le besoin.", link: "/don" },
+  { num: "03", name: "Tchad", desc: "Construction de puits et accès à l'eau potable pour des villages entiers.", link: "/puits" },
+  { num: "04", name: "Soudan", desc: "Soutien humanitaire aux réfugiés et aide médicale d'urgence.", link: "/don" },
+  { num: "05", name: "Gaza", desc: "Parrainage d'orphelins, éducation et colis alimentaires d'urgence.", link: "/colis" },
+  { num: "06", name: "Pakistan", desc: "Accès à l'eau potable et aide aux familles les plus démunies.", link: "/puits" },
 ];
 
 function Counter({ from, to, label }: { from: number; to: number; label: string }) {
@@ -23,7 +23,7 @@ function Counter({ from, to, label }: { from: number; to: number; label: string 
 
   useEffect(() => {
     let start = from;
-    const duration = 4000; // Slower animation (4 seconds)
+    const duration = 4000;
     const stepTime = 50;
     const steps = duration / stepTime;
     const increment = (to - from) / steps;
@@ -52,10 +52,10 @@ function Counter({ from, to, label }: { from: number; to: number; label: string 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20">
-      {/* New Professional Hero */}
+      {/* Hero */}
       <ProfessionalHero />
 
-      {/* Action Buttons Section */}
+      {/* Action Buttons */}
       <ScrollReveal width="100%">
         <div className="flex flex-col items-center justify-center pt-12 pb-12 mt-10 bg-background relative z-20">
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center w-full px-4">
@@ -82,7 +82,7 @@ export default function Home() {
         </ScrollVelocity>
       </div>
 
-      {/* Video Section */}
+      {/* Vidéo 1 */}
       <section className="py-20 px-4 max-w-7xl mx-auto w-full">
         <ScrollReveal width="100%">
           <div className="rounded-3xl overflow-hidden shadow-2xl relative aspect-video w-full bg-black">
@@ -102,23 +102,65 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* Nos Actions Section */}
-      <section className="py-10 px-4 md:px-8 max-w-7xl mx-auto" id="actions">
+      {/* Vidéo 3 */}
+      <section className="pb-20 px-4 max-w-7xl mx-auto w-full">
+        <ScrollReveal width="100%">
+          <div className="rounded-3xl overflow-hidden shadow-2xl relative aspect-video w-full bg-black">
+            <video
+              controls
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/video3.mp4" type="video/mp4" />
+              Votre navigateur ne supporte pas la vidéo.
+            </video>
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* Nos Actions */}
+      <section className="py-10 px-4 md:px-8 max-w-7xl mx-auto w-full" id="actions">
         <ScrollReveal width="100%">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-primary mb-4">Nos Actions</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Nous intervenons dans 7 pays pour apporter une aide concrète aux populations les plus vulnérables.
+              Nous intervenons dans 6 pays pour apporter une aide concrète aux populations les plus vulnérables.
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {countries.map((country, idx) => (
-              <ScrollReveal key={country.name} delay={idx * 0.1} width="100%">
-                <CountryCard
-                  country={country.name}
-                  image={country.image}
-                  description={country.desc}
-                />
+            {actions.map((action, idx) => (
+              <ScrollReveal key={action.name} delay={idx * 0.08} width="100%">
+                <Link href={action.link} className="block h-full">
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative bg-white rounded-2xl p-8 shadow-md border border-gray-100 hover:shadow-xl hover:border-secondary/40 transition-all group overflow-hidden h-full flex flex-col"
+                  >
+                    {/* Numéro en fond */}
+                    <span className="absolute -top-2 right-4 text-8xl font-black text-gray-100 select-none group-hover:text-secondary/15 transition-colors duration-300 leading-none">
+                      {action.num}
+                    </span>
+
+                    {/* Contenu */}
+                    <div className="relative z-10 flex flex-col flex-1">
+                      {/* Ligne accent */}
+                      <div className="w-10 h-1 bg-secondary rounded-full mb-5" />
+
+                      <h3 className="text-2xl font-black text-primary mb-3 uppercase tracking-widest">
+                        {action.name}
+                      </h3>
+
+                      <p className="text-gray-500 leading-relaxed text-sm flex-1">
+                        {action.desc}
+                      </p>
+
+                      <div className="mt-6 flex items-center gap-1 text-secondary font-semibold text-sm group-hover:gap-2 transition-all">
+                        En savoir plus <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </motion.div>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
@@ -128,7 +170,6 @@ export default function Home() {
       {/* Parrainage Highlight */}
       <section className="py-20 bg-primary text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-primary opacity-100 z-0"></div>
-        {/* Pattern Text Changed to Innocents */}
         <div className="absolute inset-0 opacity-5 pointer-events-none flex items-center justify-center overflow-hidden">
           <span className="text-[20vw] font-bold text-white whitespace-nowrap rotate-12">INNOCENTS</span>
         </div>
@@ -209,7 +250,7 @@ export default function Home() {
                   <div className="p-6 flex-1 flex flex-col">
                     <Droplets className="w-8 h-8 text-secondary mb-4" />
                     <h3 className="text-xl font-bold text-primary mb-2">Construction de Puits</h3>
-                    <p className="text-gray-600 mb-4 flex-1">Offrez l'accès à l'eau potable au Tchad et au Pakistan.</p>
+                    <p className="text-gray-600 mb-4 flex-1">Offrez l'accès à l'eau potable au Tchad, Pakistan et Maroc.</p>
                     <span className="text-secondary font-semibold group-hover:translate-x-2 transition-transform inline-flex items-center gap-1">
                       En savoir plus <ArrowRight className="w-4 h-4" />
                     </span>
@@ -239,7 +280,7 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* Impact Section */}
+      {/* Impact */}
       <section className="py-20 bg-gray-50">
         <ScrollReveal width="100%">
           <div className="container mx-auto px-4">
@@ -259,4 +300,3 @@ export default function Home() {
     </div>
   );
 }
-

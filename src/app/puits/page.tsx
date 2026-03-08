@@ -127,7 +127,7 @@ export default function PuitsPage() {
                     <div className="grid md:grid-cols-2">
                         <div className="relative h-[300px] md:h-auto">
                             <Image
-                                src="/images/maroc.jpg"
+                                src="/images/puitmaroc.jpg"
                                 alt="Puits Maroc"
                                 fill
                                 className="object-cover"

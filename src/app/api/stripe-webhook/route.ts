@@ -90,7 +90,7 @@ function buildEmailHtml(
 }
 
 function buildRenewalEmailHtml(
-    formType: string,
+    _formType: string,
     formData: Record<string, string>,
     invoice: Stripe.Invoice
 ): string {
@@ -199,10 +199,10 @@ export async function POST(request: Request) {
 
         // ─── Renouvellement d'abonnement mensuel (parrainage) ──────────────────
         if (event.type === 'invoice.payment_succeeded') {
-            const invoice = event.data.object as Stripe.Invoice;
+            const invoice = event.data.object as any;
 
             // Ne traiter que les renouvellements (pas la création initiale, déjà gérée ci-dessus)
-            if ((invoice as any).billing_reason === 'subscription_cycle') {
+            if (invoice.billing_reason === 'subscription_cycle') {
                 console.log('invoice.payment_succeeded (renewal):', invoice.id);
 
                 try {

@@ -12,20 +12,20 @@ const GLOBE_CONFIG: COBEOptions = {
     devicePixelRatio: 2,
     phi: 0,
     theta: 0.3,
-    dark: 0,
-    diffuse: 0.4,
+    dark: 1,
+    diffuse: 1.2,
     mapSamples: 16000,
-    mapBrightness: 1.2,
-    baseColor: [1, 1, 1],
-    markerColor: [251 / 255, 100 / 255, 21 / 255],
-    glowColor: [1, 1, 1],
+    mapBrightness: 6,
+    baseColor: [0.15, 0.25, 0.45],
+    markerColor: [251 / 255, 180 / 255, 50 / 255],
+    glowColor: [0.2, 0.4, 0.8],
     markers: [
-        { location: [31.7917, -7.0926], size: 0.05 }, // Maroc
-        { location: [14.4974, -14.4524], size: 0.05 }, // Sénégal
-        { location: [15.4542, 18.7322], size: 0.05 }, // Tchad
-        { location: [31.3547, 34.3088], size: 0.05 }, // Gaza
-        { location: [12.8628, 30.2176], size: 0.05 }, // Soudan
-        { location: [30.3753, 69.3451], size: 0.05 }, // Pakistan
+        { location: [31.7917, -7.0926], size: 0.09 }, // Maroc
+        { location: [14.4974, -14.4524], size: 0.08 }, // Sénégal
+        { location: [15.4542, 18.7322], size: 0.08 }, // Tchad
+        { location: [31.3547, 34.3088], size: 0.09 }, // Gaza
+        { location: [12.8628, 30.2176], size: 0.08 }, // Soudan
+        { location: [30.3753, 69.3451], size: 0.09 }, // Pakistan
     ],
 }
 

@@ -293,7 +293,7 @@ export default function ColisPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className="relative h-48 rounded-xl overflow-hidden cursor-pointer group">
-                                <Image src={`/images/colis-distrib-${i}.jpg`} alt={`Distribution ${i}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <Image src={`/images/colis-distrib-${i}.jpeg`} alt={`Distribution ${i}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         ))}
                     </div>

@@ -188,21 +188,6 @@ export default function PuitsPage() {
 
             </div>
 
-            {/* FAQ Section */}
-            <div className="max-w-3xl mx-auto pt-12 border-t border-gray-100">
-                <h2 className="text-2xl font-bold text-primary mb-8 text-center">Questions Fréquentes</h2>
-                <div className="space-y-4">
-                    <div className="border border-gray-200 rounded-lg p-6">
-                        <h3 className="font-bold text-lg mb-2">Puis-je obtenir un reçu fiscal ?</h3>
-                        <p className="text-gray-600">Oui, le reçu fiscal est disponible sur simple demande (pas automatique).</p>
-                    </div>
-                    <div className="border border-gray-200 rounded-lg p-6">
-                        <h3 className="font-bold text-lg mb-2">Puis-je payer en plusieurs fois ?</h3>
-                        <p className="text-gray-600">Oui, vous pouvez mettre en place un virement mensuel ou nous contacter pour un échelonnement.</p>
-                    </div>
-                </div>
-            </div>
-
             {/* CORRECTION: Ajouter le composant PuitsForm ici */}
             <PuitsForm
                 isOpen={isFormOpen}

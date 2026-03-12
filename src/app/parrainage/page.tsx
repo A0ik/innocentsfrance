@@ -148,10 +148,6 @@ export default function ParrainagePage() {
                     <h2 className="text-2xl font-bold text-primary mb-8 text-center">Questions Fréquentes</h2>
                     <div className="space-y-4">
                         <div className="border border-gray-200 rounded-lg p-6">
-                            <h3 className="font-bold text-lg mb-2">Le don est-il déductible des impôts ?</h3>
-                            <p className="text-gray-600">Oui, le reçu fiscal est disponible sur simple demande (pas automatique).</p>
-                        </div>
-                        <div className="border border-gray-200 rounded-lg p-6">
                             <h3 className="font-bold text-lg mb-2">Comment sont choisis les orphelins ?</h3>
                             <p className="text-gray-600">Nous identifions les cas les plus urgents avec nos partenaires locaux, en donnant la priorité aux orphelins sans aucun autre soutien familial.</p>
                         </div>

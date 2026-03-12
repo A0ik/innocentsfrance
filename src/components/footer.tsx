@@ -9,7 +9,6 @@ export function Footer() {
                 <div className="md:col-span-2">
                     <h3 className="text-2xl font-bold mb-4 font-outfit">INNOCENTS FRANCE</h3>
                     <p className="opacity-80 max-w-sm">Association humanitaire d'aide aux orphelins et aux mamans en difficulté.</p>
-                    <p className="mt-4 text-sm opacity-60">Reçu fiscal disponible sur demande (pas automatique).</p>
                 </div>
                 <div>
                     <h4 className="font-bold mb-4">Liens Rapides</h4>

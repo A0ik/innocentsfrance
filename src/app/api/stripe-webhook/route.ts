@@ -52,10 +52,11 @@ function buildEmailHtml(
     const paymentLabel = isSepa ? 'SEPA' : isApplePay ? 'Apple Pay' : isGooglePay ? 'Google Pay' : 'CB';
 
     const titles: Record<string, string> = {
-        parrainage: `🫶 Nouveau Parrainage — ${paymentLabel}`,
-        puits: '💧 Nouveau Puits financé',
-        don: '🎁 Nouveau Don',
-        colis: '📦 Nouveau Colis alimentaire',
+        parrainage: `Nouveau Parrainage — ${paymentLabel}`,
+        puits: 'Nouveau Puits financé',
+        don: 'Nouveau Don',
+        colis: 'Nouveau Colis alimentaire',
+        aid: 'Nouveau Mouton pour l\'Aïd',
     };
     const title = titles[formType] || 'Nouveau Paiement';
 
@@ -75,12 +76,13 @@ function buildEmailHtml(
     if (formData.telephone) rows += row('Téléphone', formData.telephone);
     if (adresse) rows += row('Adresse', adresse);
     if (formType === 'puits' && formData.beneficiaire) rows += row('Bénéficiaire (plaque)', formData.beneficiaire);
+    if (formType === 'aid' && formData.destination) rows += row('Destination', formData.destination);
     rows += row('ID Stripe', `<a href="${stripeDashboardUrl}" target="_blank">${sessionId}</a>`);
 
     return `
         <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;">
             <h2 style="color:#1a1a2e;border-bottom:2px solid #e5e7eb;padding-bottom:8px;">${title}</h2>
-            <p style="color:#16a34a;font-weight:bold;">&#9989; Paiement validé avec succès</p>
+            <p style="color:#16a34a;font-weight:bold;">Paiement validé avec succès</p>
             <table style="border-collapse:collapse;width:100%;">
                 ${rows}
             </table>

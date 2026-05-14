@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Heart, Gift, Droplets, HandCoins, Info, Mail, LucideIcon } from "lucide-react"
+import { Home, Heart, Gift, Droplets, HandCoins, Info, Mail, Sparkles, LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface NavItem {
@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
     { name: 'Parrainage', url: '/parrainage', icon: Heart },
     { name: 'Colis', url: '/colis', icon: Gift },
     { name: 'Puits', url: '/puits', icon: Droplets },
+    { name: 'Aïd', url: '/aid', icon: Sparkles },
     { name: 'Don', url: '/don', icon: HandCoins },
     { name: 'A propos', url: '/apropos', icon: Info },
     { name: 'Contact', url: '/contact', icon: Mail }
